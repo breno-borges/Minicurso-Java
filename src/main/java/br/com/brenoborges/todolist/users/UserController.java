@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 /**
  * Annotation @RequestController serve para informar que a classe tem um
  * controller.
@@ -48,8 +50,21 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já cadastrado!");
         }
 
+        /**
+         * Biblioteca BCrypt usada para criptografar as senhas.
+         * Variável de senha recebendo o método da biblioteca que passa como parâmetro
+         * cost 12 que é da documentação e a senha sendo transformada em um Char.
+         */
+        var passwordHashred = BCrypt.withDefaults().hashToString(12, userModel.getPassword().toCharArray());
+        userModel.setPassword(passwordHashred);
+
+        /**
+         * Usuário criado recebe o método save que vem da interface iUsersRepository,
+         * onde extende a classe JpaRepository que possui diversos métodos default.
+         */
         var userCreated = this.usersRepository.save(userModel);
-        
+
+        // Retornando Status Code de usuário criado com sucesso.
         return ResponseEntity.status(HttpStatus.CREATED).body(userCreated);
     }
 }

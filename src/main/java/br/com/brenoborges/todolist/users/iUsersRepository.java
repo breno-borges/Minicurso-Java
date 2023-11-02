@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * JPaRepository sendo usado pois já tem alguns métodos por padrão para se
  * comunicar com o BD.
+ * 
+ * Passa nos parametros da JPaRepository a entidade e o Id
  */
 public interface iUsersRepository extends JpaRepository<UserModel, UUID> {
 
