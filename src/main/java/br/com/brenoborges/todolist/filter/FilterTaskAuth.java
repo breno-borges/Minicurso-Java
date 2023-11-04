@@ -35,7 +35,7 @@ public class FilterTaskAuth extends OncePerRequestFilter {
         var servletPath = request.getServletPath();
 
         // Direciona para a rota que eu quero, se não for ela, vida que segue.
-        if (servletPath.equals("/tasks/")) {
+        if (servletPath.startsWith("/tasks/")) {
             /**
              * Pegar a autenticação (usuario e senha)
              */
@@ -70,9 +70,13 @@ public class FilterTaskAuth extends OncePerRequestFilter {
                 var passwordVerify = BCrypt.verifyer().verify(password.toCharArray(), user.getPassword());
                 // .verified retorna um boolean
                 if (passwordVerify.verified) {
+
                     /**
-                     * Se chegar a esse ponto, vai seguir e fazer o que tem que ser feito.
+                     * Segue viagem
                      */
+
+                    // Setando o atributo idUser na request com o id do usuário.
+                    request.setAttribute("idUser", user.getId());
                     filterChain.doFilter(request, response);
                 } else {
                     response.sendError(401);
