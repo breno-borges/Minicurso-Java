@@ -30,4 +30,18 @@ public class TaskModel {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    /**
+     * Metodo que trata exceção de titulo.
+     * Quando passo a exceção na declaração do método, sempre que chamam esse método
+     * tem que fazer a tratativa.
+     * 
+     * @param title
+     * @throws Exception
+     */
+    public void setTitle(String title) throws Exception {
+        if (title.length() > 50) {
+            throw new Exception("O campo de titulo deve conter no máx 50 caracteres!");
+        }
+        this.title = title;
+    }
 }
